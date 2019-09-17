@@ -69,6 +69,7 @@ export default class RoomClient
 		}
 	)
 	{
+		debugger;
 		logger.debug(
 			'constructor() [roomId:"%s", peerId:"%s", displayName:"%s", device:%s]',
 			roomId, peerId, displayName, device.flag);
@@ -235,6 +236,7 @@ export default class RoomClient
 
 	async join()
 	{
+		debugger;
 		const protooTransport = new protooClient.WebSocketTransport(this._protooUrl);
 
 		this._protoo = new protooClient.Peer(protooTransport);
@@ -293,6 +295,7 @@ export default class RoomClient
 				'proto "request" event [method:%s, data:%o]',
 				request.method, request.data);
 
+			debugger;
 			switch (request.method)
 			{
 				case 'newConsumer':
@@ -2017,6 +2020,7 @@ export default class RoomClient
 
 	async _joinRoom()
 	{
+		debugger;
 		logger.debug('_joinRoom()');
 
 		try

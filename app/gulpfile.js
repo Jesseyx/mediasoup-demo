@@ -46,6 +46,7 @@ const stylus = require('gulp-stylus');
 const cssBase64 = require('gulp-css-base64');
 const nib = require('nib');
 const browserSync = require('browser-sync');
+const webpack = require('webpack-stream');
 
 const PKG = require('./package.json');
 const BANNER = fs.readFileSync('banner.txt').toString();
@@ -189,6 +190,32 @@ gulp.task('bundle', () =>
 gulp.task('bundle:watch', () =>
 {
 	return bundle({ watch: true });
+});
+
+const webpackCompiler = require('webpack');
+const webpackConfig = require('./webpack.config.js');
+
+gulp.task('bundle:webpack', () =>
+{
+	function doBuild()
+	{
+		return gulp.src(PKG.main)
+			.pipe(webpack(webpackConfig), webpackCompiler)
+			.pipe(gulp.dest(OUTPUT_DIR));
+	}
+
+	const watcher = gulp.watch([ 'lib/**/*.js', 'lib/**/*.jsx' ]);
+
+	watcher.on('change', function()
+	{
+		const start = Date.now();
+
+		gutil.log('bundling...');
+		doBuild();
+		gutil.log('bundle took %sms', (Date.now() - start));
+	});
+
+	return doBuild();
 });
 
 gulp.task('browser', (done) =>
@@ -335,7 +362,8 @@ gulp.task('dist', gulp.series(
 gulp.task('live', gulp.series(
 	'clean',
 	'lint',
-	'bundle:watch',
+	// 'bundle:watch',
+	'bundle:webpack',
 	'html',
 	'css',
 	'resources',

@@ -100,7 +100,7 @@ module.exports =
 		'no-confusing-arrow': 2,
 		'no-console': 2,
 		'no-const-assign': 2,
-		'no-debugger': 2,
+		'no-debugger': 0,
 		'no-dupe-args': 2,
 		'no-dupe-keys': 2,
 		'no-duplicate-case': 2,

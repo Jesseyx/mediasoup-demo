@@ -420,11 +420,13 @@ async function runProtooWebSocketServer()
 		// roomId.
 		queue.push(async () =>
 		{
+			// 每次有新的 WebSocket 连接时获取或创建 room
 			const room = await getOrCreateRoom({ roomId, forceH264, forceVP9 });
 
 			// Accept the protoo WebSocket connection.
 			const protooWebSocketTransport = accept();
 
+			// 每个连接相当于一个 peer, 创建 peer
 			room.handleProtooConnection({ peerId, protooWebSocketTransport });
 		})
 			.catch((error) =>
